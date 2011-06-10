@@ -5,12 +5,30 @@
 #include <readline/history.h>
 #include <execinfo.h> // backtrace
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
+static void loadContext (compile::LinkContext &shell, string contextFilename) {
+	ifstream contextFile (contextFilename.c_str());
+	string line;
+	while (contextFile.good()) {
+		getline (contextFile, line);
+		shell::execute (shell, line);
+	}
+	contextFile.close();
+}
+
+static void saveContext (compile::LinkContext &shell, string contextFilename) {
+	ofstream contextFile (contextFilename.c_str());
+	shell::showContext (shell, contextFile);
+	contextFile.close();
+}
+
 /** Execute C++ commands from stdin one at a time until EOF. Print any results to stdout, and errors to stderr */
-static void interactionLoop () {
+static void interactionLoop (string contextFilename) {
 	compile::LinkContext myShell;
+	loadContext (myShell, contextFilename);
 	for (;;) {
 		char* line = readline ("> ");
 		if (! line) break; // EOF
@@ -19,6 +37,7 @@ static void interactionLoop () {
 		delete line;
 		try {
 			shell::execute (myShell, command);
+			saveContext (myShell, contextFilename);
 		} catch (exception &e) {
 			cerr << /*typeName(e) << ": " <<*/ e.what() << endl;
 			void *array[30];
@@ -30,6 +49,6 @@ static void interactionLoop () {
 }
 
 int main (int argc, char* argv[]) {
-	interactionLoop();
+	interactionLoop ("." + string (argv[0]));
 	return 0;
 }

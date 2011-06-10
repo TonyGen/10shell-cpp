@@ -44,4 +44,6 @@ public:
 	}
 };
 
+/** Print current context to given stream */
+void showContext (compile::LinkContext &shell, std::ostream &out);
 }

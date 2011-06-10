@@ -13,14 +13,12 @@ template <class A> static void remove (vector<A> &list, A item) {
 		if (*it == item) {list.erase (it); return;}
 }
 
-/** Print current context */
-std::string showContext (compile::LinkContext &shell) {
-	std::stringstream ss;
-	for (unsigned i = 0; i < shell.libPaths.size(); i++) ss << " #librarypath " << shell.libPaths[i] << "\n";
-	for (unsigned i = 0; i < shell.libNames.size(); i++) ss << " #library " << shell.libNames[i] << "\n";
-	for (unsigned i = 0; i < shell.includePaths.size(); i++) ss << " #includepath " << shell.includePaths[i] << "\n";
-	for (unsigned i = 0; i < shell.headers.size(); i++) ss << " " << shell.headers[i] << "\n";
-	return ss.str();
+/** Print current context to given stream */
+void shell::showContext (compile::LinkContext &shell, ostream &out) {
+	for (unsigned i = 0; i < shell.libPaths.size(); i++) out << "#librarypath " << shell.libPaths[i] << "\n";
+	for (unsigned i = 0; i < shell.libNames.size(); i++) out << "#library " << shell.libNames[i] << "\n";
+	for (unsigned i = 0; i < shell.includePaths.size(); i++) out << "#includepath " << shell.includePaths[i] << "\n";
+	for (unsigned i = 0; i < shell.headers.size(); i++) out << shell.headers[i] << "\n";
 }
 
 /** A Command is a C++ Directive or Statement */
@@ -83,7 +81,7 @@ void Directive::execute (compile::LinkContext &shell) {
 	else if (name == "librarypath") shell.libPaths.push_back (argLine());
 	else if (name == "library") shell.libNames.push_back (argLine());
 	else if (name == "includepath") shell.includePaths.push_back (argLine());
-	else if (name == "context") cout << showContext (shell) << flush;
+	else if (name == "context") {shell::showContext (shell, cout); cout.flush();}
 	else shell.headers.push_back (command);
 }
 void Statement::execute (compile::LinkContext &shell) {
