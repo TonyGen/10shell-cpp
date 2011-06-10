@@ -16,13 +16,11 @@ static void loadContext (compile::LinkContext &shell, string contextFilename) {
 		getline (contextFile, line);
 		shell::execute (shell, line);
 	}
-	contextFile.close();
 }
 
 static void saveContext (compile::LinkContext &shell, string contextFilename) {
 	ofstream contextFile (contextFilename.c_str());
 	shell::showContext (shell, contextFile);
-	contextFile.close();
 }
 
 /** Execute C++ commands from stdin one at a time until EOF. Print any results to stdout, and errors to stderr */
@@ -49,6 +47,7 @@ static void interactionLoop (string contextFilename) {
 }
 
 int main (int argc, char* argv[]) {
-	interactionLoop ("." + string (argv[0]));
+	string contextFile = argc > 1 ? argv[1] : "." + string (argv[0]);
+	interactionLoop (contextFile);
 	return 0;
 }

@@ -71,6 +71,7 @@ static Command_ parseCommand (string command) {
 
 /** Execute command. Throw BadCommand if not understood (by compiler, linker, or this shell). */
 void shell::execute (compile::LinkContext &shell, string command) {
+	if (command.empty()) return;
 	parseCommand (command) -> execute (shell);
 }
 
