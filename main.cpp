@@ -27,6 +27,7 @@ static void saveContext (compile::LinkContext &shell, string contextFilename) {
 static void interactionLoop (string contextFilename) {
 	compile::LinkContext myShell;
 	loadContext (myShell, contextFilename);
+	shell::showContext (myShell, cout);
 	for (;;) {
 		char* line = readline ("> ");
 		if (! line) break; // EOF
