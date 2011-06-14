@@ -14,11 +14,11 @@ template <class A> static void remove (vector<A> &list, A item) {
 }
 
 /** Print current context to given stream */
-void shell::showContext (compile::LinkContext &shell, ostream &out) {
-	for (unsigned i = 0; i < shell.libPaths.size(); i++) out << "#librarypath " << shell.libPaths[i] << "\n";
-	for (unsigned i = 0; i < shell.libNames.size(); i++) out << "#library " << shell.libNames[i] << "\n";
-	for (unsigned i = 0; i < shell.includePaths.size(); i++) out << "#includepath " << shell.includePaths[i] << "\n";
-	for (unsigned i = 0; i < shell.headers.size(); i++) out << shell.headers[i] << "\n";
+void shell::showContext (compile::LinkContext &ctx, ostream &out) {
+	for (unsigned i = 0; i < ctx.libPaths.size(); i++) out << "#librarypath " << ctx.libPaths[i] << "\n";
+	for (unsigned i = 0; i < ctx.libNames.size(); i++) out << "#library " << ctx.libNames[i] << "\n";
+	for (unsigned i = 0; i < ctx.includePaths.size(); i++) out << "#includepath " << ctx.includePaths[i] << "\n";
+	for (unsigned i = 0; i < ctx.headers.size(); i++) out << ctx.headers[i] << "\n";
 }
 
 /** A Command is a C++ Directive or Statement */
@@ -70,35 +70,35 @@ static Command_ parseCommand (string command) {
 }
 
 /** Execute command. Throw BadCommand if not understood (by compiler, linker, or this shell). */
-void shell::execute (compile::LinkContext &shell, string command) {
+void shell::execute (compile::LinkContext &ctx, string command) {
 	if (command.empty()) return;
-	parseCommand (command) -> execute (shell);
+	parseCommand (command) -> execute (ctx);
 }
 
-void Directive::execute (compile::LinkContext &shell) {
+void Directive::execute (compile::LinkContext &ctx) {
 	string name = opName();
-	if (name == "drop") parseCommand (argLine()) -> drop (shell);
-	else if (name == "dropall") shell.clearAll();
-	else if (name == "librarypath") shell.libPaths.push_back (argLine());
-	else if (name == "library") shell.libNames.push_back (argLine());
-	else if (name == "includepath") shell.includePaths.push_back (argLine());
-	else if (name == "context") {shell::showContext (shell, cout); cout.flush();}
-	else shell.headers.push_back (command);
+	if (name == "drop") parseCommand (argLine()) -> drop (ctx);
+	else if (name == "dropall") ctx.clearAll();
+	else if (name == "librarypath") ctx.libPaths.push_back (argLine());
+	else if (name == "library") ctx.libNames.push_back (argLine());
+	else if (name == "includepath") ctx.includePaths.push_back (argLine());
+	else if (name == "context") {shell::showContext (ctx, cout); cout.flush();}
+	else ctx.headers.push_back (command);
 }
-void Statement::execute (compile::LinkContext &shell) {
-	compile::exec (shell, command);
+void Statement::execute (compile::LinkContext &ctx) {
+	compile::exec (ctx, command);
 }
 
-void Directive::drop (compile::LinkContext &shell) {
+void Directive::drop (compile::LinkContext &ctx) {
 	string name = opName();
 	if (name == "drop") throw shell::BadCommand ("can't drop", command);
 	else if (name == "dropall") throw shell::BadCommand ("can't drop", command);
-	else if (name == "librarypath") remove (shell.libPaths, argLine());
-	else if (name == "library") remove (shell.libNames, argLine());
-	else if (name == "includepath") remove (shell.includePaths, argLine());
+	else if (name == "librarypath") remove (ctx.libPaths, argLine());
+	else if (name == "library") remove (ctx.libNames, argLine());
+	else if (name == "includepath") remove (ctx.includePaths, argLine());
 	else if (name == "context") throw shell::BadCommand ("can't drop", command);
-	else remove (shell.headers, command);
+	else remove (ctx.headers, command);
 }
-void Statement::drop (compile::LinkContext &shell) {
+void Statement::drop (compile::LinkContext &ctx) {
 	throw shell::BadCommand ("can't drop statement", command);
 }

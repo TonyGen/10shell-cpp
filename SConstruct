@@ -1,16 +1,16 @@
 libname = '10shell'
 
 lib = SharedLibrary (libname, ['shell.cpp'],
-	CCFLAGS = ['-g'],
+	CCFLAGS = ['-g', '-rdynamic'],
 	CPPPATH = ['.', '/opt/local/include'],
 	LIBPATH = ['/opt/local/lib'],
 	LIBS = ['10util'] )
 
 prog = Program (libname, ['main.cpp'],
-	CCFLAGS = ['-g'],
+	CCFLAGS = ['-g', '-rdynamic'],
 	CPPPATH = ['.', '/opt/local/include'],
 	LIBPATH = ['.', '/opt/local/lib'],
-	LIBS = [libname, 'readline'] )
+	LIBS = [libname, '10util', 'boost_thread-mt', 'readline'] )
 
 Alias ('install', '/usr/local')
 Install ('/usr/local/lib', lib)
