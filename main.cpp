@@ -30,9 +30,9 @@ static void saveContext (compile::LinkContext &shell, string contextFilename) {
 }
 
 /** Execute command */
-static void executeCmd (compile::LinkContext &myShell, string command) {
+static void executeCmd (compile::LinkContext* myShell, string command) {
 	try {
-		shell::execute (myShell, command);
+		shell::execute (*myShell, command);
 	} catch (exception &e) {
 		cerr << typeName(e) << ": " << e.what() << endl;
 	}
@@ -53,7 +53,7 @@ static void interactionLoop (string metaDir) {
 		add_history (line);
 		string command (line);
 		delete line;
-		boost::function0<void> act = boost::bind (executeCmd, myShell, command);
+		boost::function0<void> act = boost::bind (executeCmd, &myShell, command);
 		currentCommand = thread::fork (act);
 		currentCommand->join();
 		currentCommand.reset();
