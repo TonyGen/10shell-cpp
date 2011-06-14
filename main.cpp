@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <boost/bind.hpp>
 #include <10util/thread.h>
+#include <cstdlib> // system
 
 using namespace std;
 
@@ -63,7 +64,7 @@ static void interactionLoop (string metaDir) {
 }
 
 void ensureDir (string dir) {
-	//TODO
+	system (("mkdir -p " + dir).c_str());
 }
 
 void interrupt_handler (int sig) {
