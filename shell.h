@@ -1,5 +1,6 @@
 /* Execute C++ commands one at a time.
  * A command can be any C++ preprocessor-directive, declaration, definition, or statement.
+ * Actually, current implementation only accepts directives and statements.
  * Implementation:
  * Each definition is compiled to its own dynamic library and loaded. The OS initializes the definition when loaded.
  * Each statement is compiled inside a dummy function, loaded, and executed. A statement may contain multiple statements each terminated by ';'.

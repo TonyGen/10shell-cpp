@@ -10,7 +10,7 @@ prog = Program (libname, ['main.cpp'],
 	CCFLAGS = ['-g', '-rdynamic'],
 	CPPPATH = ['.', '/opt/local/include'],
 	LIBPATH = ['.', '/opt/local/lib'],
-	LIBS = [libname, '10util', 'boost_thread-mt', 'readline'] )
+	LIBS = [libname, '10util', 'boost_thread-mt', 'boost_program_options-mt', 'readline'] )
 
 Alias ('install', '/usr/local')
 Install ('/usr/local/lib', lib)
