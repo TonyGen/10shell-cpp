@@ -23,7 +23,7 @@ Install dependent library first
 Download and remove '-ccp' suffix
 
 	git clone git://github.com/TonyGen/10shell-cpp.git 10shell
-	cd remote
+	cd 10shell
 
 Build library `lib10shell.so` and program `10shell`
 
