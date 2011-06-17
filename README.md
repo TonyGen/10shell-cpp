@@ -14,8 +14,9 @@ Note, statements are not remembered, so a statement can not use a variable assig
 
 ### Installing
 
-Install dependent library first
+Install dependent libraries/programs first
 
+- g++ (gcc)
 - [10util](https://github.com/TonyGen/10util-cpp)
 - boost-program-options-dev
 - readline
