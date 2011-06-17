@@ -1,4 +1,4 @@
-Execute C++ statements in an interactive shell. Each statement is compiled, dynamically loaded, and executed. Each statement takes a second or two to compile, but is tolerable.
+Execute C++ statements in an interactive shell. Each statement is compiled inside a dummy function, dynamically loaded, and executed. Each statement takes a second or two to compile, but is tolerable.
 
 To give context (libraries and headers) to each C++ statement, the shell also accepts directives. A directive is a 'using namespace ...' directive, a pre-processor directive like '#include ...', or one of the special shell directive, below. The directives are remembered and used by every future statement. The context is even remembered across sessions in a file local to the working directory.
 The special shell directives are:

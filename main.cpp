@@ -86,7 +86,7 @@ void segfault_handler (int sig) {
 
 void get_program_options (int argc, char* argv[]) {
 	po::options_description desc (
-		"\nExecute C++ statements in an interactive shell. Each statement is compiled, dynamically loaded, and executed. "
+		"\nExecute C++ statements in an interactive shell. Each statement is compiled inside a dummy function, dynamically loaded, and executed. "
 		"Each statement takes a second or two to compile, but is tolerable.\n\n"
 		"To give context (libraries and headers) to each C++ statement, the shell also accepts directives. "
 		"A directive is a 'using namespace ...' directive, a pre-processor directive like '#include ...', "
