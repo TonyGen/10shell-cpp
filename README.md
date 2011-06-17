@@ -7,7 +7,7 @@ The special shell directives are:
 - '#library Libname' where Libname is supplied to the -l option of the compiler
 - '#includepath Path' where Path is supplied to the -I option of the compiler
 - '#context' lists all previously entered directives
-- '#drop Directive' where Directive is a previously entered directive. Drop removes the directive for memory, ie. undoes the directive
+- '#drop Directive' where Directive is a previously entered directive. Drop removes the directive from memory, ie. undoes the directive
 - '#dropall' removes all previous directives from context memory
 
 Note, statements (as opposed to directives) are not remembered, so a statement can not use a variable assigned by a previous statement. This was done for simplicity of implementation and because I don't think you loose much expressive power as exemplified by normal Bash shell usage. Most of the time you don't create temporary variables in Bash shell to be used later. However, you can create temporary variables for the same statement, i.e. a statement can be a sequence of statements.

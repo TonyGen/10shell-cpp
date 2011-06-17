@@ -97,7 +97,7 @@ void get_program_options (int argc, char* argv[]) {
 		"'#library Libname' where Libname is supplied to the -l option of the compiler\n"
 		"'#includepath Path' where Path is supplied to the -I option of the compiler\n"
 		"'#context' lists all previously entered directives\n"
-		"'#drop Directive' where Directive is a previously entered directive. Drop removes the directive for memory, ie. undoes the directive\n"
+		"'#drop Directive' where Directive is a previously entered directive. Drop removes the directive from memory, ie. undoes the directive\n"
 		"'#dropall' removes all previous directives from context memory\n\n"
 		"Note, statements (as opposed to directives) are not remembered, so a statement can not use a variable assigned by a previous statement. "
 		"This was done for simplicity of implementation and because I don't think you loose much expressive power as "
