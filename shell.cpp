@@ -16,8 +16,8 @@ template <class A> static void remove (vector<A> &list, A item) {
 /** Print current context to given stream */
 void shell::showContext (compile::LinkContext &ctx, ostream &out) {
 	for (unsigned i = 0; i < ctx.libPaths.size(); i++) out << "#librarypath " << ctx.libPaths[i] << "\n";
-	for (unsigned i = 0; i < ctx.libNames.size(); i++) out << "#library " << ctx.libNames[i] << "\n";
 	for (unsigned i = 0; i < ctx.includePaths.size(); i++) out << "#includepath " << ctx.includePaths[i] << "\n";
+	for (unsigned i = 0; i < ctx.libNames.size(); i++) out << "#library " << ctx.libNames[i] << "\n";
 	for (unsigned i = 0; i < ctx.headers.size(); i++) out << ctx.headers[i] << "\n";
 }
 
@@ -80,8 +80,8 @@ void Directive::execute (compile::LinkContext &ctx) {
 	if (name == "drop") parseCommand (argLine()) -> drop (ctx);
 	else if (name == "dropall") ctx.clearAll();
 	else if (name == "librarypath") ctx.libPaths.push_back (argLine());
-	else if (name == "library") ctx.libNames.push_back (argLine());
 	else if (name == "includepath") ctx.includePaths.push_back (argLine());
+	else if (name == "library") ctx.libNames.push_back (argLine());
 	else if (name == "context") {shell::showContext (ctx, cout); cout.flush();}
 	else ctx.headers.push_back (command);
 }
@@ -94,8 +94,8 @@ void Directive::drop (compile::LinkContext &ctx) {
 	if (name == "drop") throw shell::BadCommand ("can't drop", command);
 	else if (name == "dropall") throw shell::BadCommand ("can't drop", command);
 	else if (name == "librarypath") remove (ctx.libPaths, argLine());
-	else if (name == "library") remove (ctx.libNames, argLine());
 	else if (name == "includepath") remove (ctx.includePaths, argLine());
+	else if (name == "library") remove (ctx.libNames, argLine());
 	else if (name == "context") throw shell::BadCommand ("can't drop", command);
 	else remove (ctx.headers, command);
 }
