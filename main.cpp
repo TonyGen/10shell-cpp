@@ -14,6 +14,7 @@
 #include <10util/thread.h>
 #include <cstdlib> // system
 #include <boost/program_options.hpp>
+#include <boost/optional.hpp>
 
 using namespace std;
 namespace po = boost::program_options;
@@ -44,7 +45,7 @@ static string metadir;
 
 static bool nocatch;
 
-static thread::Thread currentCommand = thread::Thread(); // empty
+static boost::optional<thread::Thread> currentCommand;
 
 /** Execute C++ commands from stdin one at a time until EOF. Print any results to stdout, and errors to stderr */
 static void interactionLoop () {
@@ -63,9 +64,9 @@ static void interactionLoop () {
 			shell::execute (myShell, command);
 		else {
 			boost::function0<void> act = boost::bind (executeCmd, &myShell, command);
-			currentCommand = thread::fork (act);
-			currentCommand->join();
-			currentCommand.reset();
+			currentCommand = thread::fork (act, command);
+			thread::join (*currentCommand);
+			currentCommand = boost::none;
 		}
 	}
 	saveContext (myShell, metadir + "/context");
@@ -77,7 +78,7 @@ void ensureDir (string dir) {
 }
 
 void interrupt_handler (int sig) {
-	if (currentCommand) currentCommand->interrupt();
+	if (currentCommand) thread::interrupt (*currentCommand);
 }
 
 void segfault_handler (int sig) {
